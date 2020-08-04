@@ -1,0 +1,17 @@
+CLASS zcl_mvc_root_model DEFINITION
+  PUBLIC
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+    INTERFACES: zif_mvc_root_model.
+
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_mvc_root_model IMPLEMENTATION.
+
+
+ENDCLASS.

@@ -1,0 +1,4 @@
+INTERFACE zif_linked_list
+  PUBLIC .
+
+ENDINTERFACE.
