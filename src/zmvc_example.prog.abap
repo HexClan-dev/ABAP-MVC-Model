@@ -12,7 +12,14 @@ TYPES: BEGIN OF ts_scr100_param,
          surname TYPE c LENGTH 20,
        END OF ts_scr100_param.
 
-DATA: gs_scr100_param TYPE ts_scr100_param.
+TYPES: BEGIN OF ts_scr110_param,
+         name    TYPE c LENGTH 20,
+         surname TYPE c LENGTH 20,
+       END OF ts_scr110_param.
+
+
+DATA: gs_scr100_param  TYPE ts_scr100_param,
+      gs_scr_110_param TYPE ts_scr110_param.
 
 DATA: gv_ok_code LIKE sy-ucomm,
       gv_sub_scr LIKE sy-dynnr.

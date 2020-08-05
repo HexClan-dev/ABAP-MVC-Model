@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_MVC_SUB_SC110_CONTROLLER</CLSNAME>
+    <CLSNAME>ZCL_MVC_SC0110_CONTROLLER</CLSNAME>
     <LANGU>E</LANGU>
     <DESCRIPT>Subscreen Controller</DESCRIPT>
     <STATE>1</STATE>

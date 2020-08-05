@@ -15,3 +15,15 @@ MODULE user_command_0100 INPUT.
   mo_mng->get_con_dynpro( )->pai( iv_ok_code = gv_ok_code ).
 
 ENDMODULE.
+
+
+
+
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0110  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0110 INPUT.
+
+ENDMODULE.

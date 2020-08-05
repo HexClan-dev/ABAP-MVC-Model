@@ -4,17 +4,18 @@ CLASS zcl_mvc_root_sub_controller DEFINITION ABSTRACT
 
   PUBLIC SECTION.
 
+    INTERFACES: zif_mvc_root_controller.
 
     METHODS set_active IMPORTING iv_active TYPE abap_bool DEFAULT abap_true.
     METHODS is_active   RETURNING VALUE(rv_is_active) TYPE abap_bool.
 
 
-    METHODS:
-      proces_after_input ABSTRACT
-        IMPORTING
-          iv_ok_code LIKE sy-ucomm DEFAULT sy-ucomm,
-
-      process_before_output ABSTRACT.
+*    METHODS:
+*      proces_after_input ABSTRACT
+*        IMPORTING
+*          iv_ok_code LIKE sy-ucomm DEFAULT sy-ucomm,
+*
+*      process_before_output ABSTRACT.
 
     METHODS
       get_sub_screen_nr
@@ -44,7 +45,7 @@ CLASS zcl_mvc_root_sub_controller IMPLEMENTATION.
 
     IF iv_active EQ abap_true.
       " call the process before output
-      me->process_before_output( ).
+      me->zif_mvc_root_controller~pbo( ).
     ENDIF.
 
   ENDMETHOD.
