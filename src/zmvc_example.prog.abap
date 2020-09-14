@@ -8,8 +8,9 @@ REPORT zmvc_example.
 DATA: mo_mng TYPE REF TO zcl_mvc_mng_controller.
 
 TYPES: BEGIN OF ts_scr100_param,
-         name    TYPE c LENGTH 20,
-         surname TYPE c LENGTH 20,
+         name      TYPE c LENGTH 20,
+         surname   TYPE c LENGTH 20,
+         screen_nr LIKE sy-dynnr,
        END OF ts_scr100_param.
 
 TYPES: BEGIN OF ts_scr110_param,

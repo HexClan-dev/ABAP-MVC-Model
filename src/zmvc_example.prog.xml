@@ -148,7 +148,7 @@
        <LINE>MODULE status_0100.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
-       <LINE>CALL SUBSCREEN sub INCLUDING sy-repid gv_sub_scr.</LINE>
+       <LINE>CALL SUBSCREEN sub INCLUDING sy-repid gs_scr100_param-screen_nr.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW/>
       <RPY_DYFLOW/>
@@ -188,6 +188,15 @@
       <RPY_DYCATT>
        <TYPE>SCREEN</TYPE>
        <NAME>SCREEN</NAME>
+      </RPY_DYCATT>
+      <RPY_DYCATT>
+       <TYPE>CUST_CTRL</TYPE>
+       <NAME>CUSTOM_DISPLAY</NAME>
+       <ELEMENT_OF>SCREEN</ELEMENT_OF>
+       <LINE>001</LINE>
+       <COLUMN>001</COLUMN>
+       <LENGTH>120</LENGTH>
+       <HEIGHT>027</HEIGHT>
       </RPY_DYCATT>
      </CONTAINERS>
      <FIELDS>

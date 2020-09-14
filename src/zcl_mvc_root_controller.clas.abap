@@ -73,6 +73,18 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
+  METHOD zif_parameters~add_parameter.
+
+    IF me->mo_view IS BOUND.
+      me->mo_view->add_parameter(
+        EXPORTING
+          ir_param_value = ir_data_param
+          iv_param_name  = iv_param_name
+      ).
+    ENDIF.
+
+  ENDMETHOD.
+
   METHOD zif_parameters~set_parameters.
     IF me->mo_view IS BOUND.
       me->mo_view->set_parameters( ir_data_param ).

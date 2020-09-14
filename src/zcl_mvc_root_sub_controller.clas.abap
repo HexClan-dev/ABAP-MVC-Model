@@ -1,4 +1,4 @@
-CLASS zcl_mvc_root_sub_controller DEFINITION ABSTRACT
+CLASS zcl_mvc_root_sub_controller DEFINITION INHERITING FROM zcl_mvc_root_controller
   PUBLIC
   CREATE PUBLIC .
 

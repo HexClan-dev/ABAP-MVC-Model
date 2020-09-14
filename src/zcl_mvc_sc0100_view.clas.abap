@@ -30,7 +30,6 @@ CLASS zcl_mvc_sc0100_view IMPLEMENTATION.
         cs_input_paramters = ls_cp
     ).
 
-
   ENDMETHOD.
 
 

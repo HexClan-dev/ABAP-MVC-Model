@@ -11,8 +11,7 @@
 *&---------------------------------------------------------------------*
 MODULE status_0100 OUTPUT.
 
-  mo_mng->get_con_dynpro(  )->pbo( ).
-  mo_mng->get_con_dynpro( '0100' )->zif_parameters~get_parameters( CHANGING cs_input_paramters = gs_scr100_param ).
+  mo_mng->get_con_dynpro( )->pbo( CHANGING cs_input_paramters = gs_scr100_param ).
 
 ENDMODULE.
 
@@ -25,7 +24,6 @@ ENDMODULE.
 *&---------------------------------------------------------------------*
 MODULE status_0110 OUTPUT.
 
-  mo_mng->get_con_dynpro( '0110' )->pbo( ).
-  mo_mng->get_con_dynpro( )->zif_parameters~get_parameters( CHANGING cs_input_paramters = gs_scr_110_param ).
+  mo_mng->get_con_dynpro( '0110' )->pbo( CHANGING cs_input_paramters = gs_scr_110_param ).
 
 ENDMODULE.

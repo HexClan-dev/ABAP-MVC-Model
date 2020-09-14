@@ -30,6 +30,8 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_mvc_root_controller~pai.
+    me->zif_parameters~set_parameters( ir_data_param = ir_data_param ).
+
     CASE iv_ok_code.
       WHEN 'IB'.
         "blabla
@@ -38,8 +40,13 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_mvc_root_controller~pbo.
-    " TODO -> implement the PBO
+    " PBO -> logic implementation
+    me->zif_parameters~add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0100').
 
+    me->zif_parameters~get_parameters(
+      CHANGING
+        cs_input_paramters = cs_input_paramters
+    ).
 
   ENDMETHOD.
 

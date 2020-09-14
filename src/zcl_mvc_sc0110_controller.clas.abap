@@ -21,6 +21,7 @@ ENDCLASS.
 CLASS zcl_mvc_sc0110_controller IMPLEMENTATION.
 
   METHOD controller.
+
     " set the subscreen number for the sub scr controller
     me->set_sub_screen_nr( '0110' ) .
   ENDMETHOD.
