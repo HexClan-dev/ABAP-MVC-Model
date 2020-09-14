@@ -41,7 +41,7 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
 
   METHOD zif_mvc_root_controller~pbo.
     " PBO -> logic implementation
-    me->zif_parameters~add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0100').
+    me->zif_parameters~add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0110').
 
     me->zif_parameters~get_parameters(
       CHANGING

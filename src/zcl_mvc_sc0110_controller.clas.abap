@@ -6,7 +6,7 @@ CLASS zcl_mvc_sc0110_controller DEFINITION INHERITING FROM zcl_mvc_root_sub_cont
   PUBLIC SECTION.
 
     INTERFACES:
-      zif_subscreen_controller.
+      zif_mvc_root_controller.
 
     METHODS: controller.
 
@@ -26,13 +26,13 @@ CLASS zcl_mvc_sc0110_controller IMPLEMENTATION.
     me->set_sub_screen_nr( '0110' ) .
   ENDMETHOD.
 
-  METHOD  zif_subscreen_controller~pbo.
+  METHOD  zif_mvc_root_controller~pbo.
 
 
 
   ENDMETHOD.
 
-  METHOD zif_subscreen_controller~pai.
+  METHOD zif_mvc_root_controller~pai.
     "PAI checking for Subscreen Controller
     CASE iv_ok_code.
       WHEN ''.
