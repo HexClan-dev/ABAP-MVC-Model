@@ -11,6 +11,7 @@ CLASS zcl_mvc_root_controller DEFINITION ABSTRACT
                gc_screen_type_modal  VALUE 'MODAL'.
 
     METHODS:
+      constructor,
       set_status_and_title
         IMPORTING
           iv_scr_nr      TYPE sydynnr       OPTIONAL
@@ -42,6 +43,17 @@ ENDCLASS.
 
 CLASS zcl_mvc_root_controller IMPLEMENTATION.
 
+
+  METHOD constructor.
+    " Create a View Controller automatically
+    " If it has not been created before
+    IF me->mo_view IS NOT BOUND.
+      me->mo_view = NEW zcl_mvc_root_view( ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
   METHOD set_status_and_title.
     IF iv_scr_nr     IS SUPPLIED. me->mv_scr_nr = iv_scr_nr.            ENDIF.
     IF iv_gui_status IS SUPPLIED. me->mv_gui_status = iv_gui_status.    ENDIF.
@@ -64,7 +76,7 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
 
   METHOD zif_parameters~get_parameters.
     IF me->mo_view IS BOUND.
-      me->mo_view->assign_parameters(
+      me->mo_view->get_parameters(
         CHANGING
           cs_input_paramters = cs_input_paramters
       ).
@@ -87,7 +99,7 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
 
   METHOD zif_parameters~set_parameters.
     IF me->mo_view IS BOUND.
-      me->mo_view->set_parameters( ir_data_param ).
+      me->mo_view->update_parameters( ir_data_param ).
     ELSE.
       MESSAGE 'View is not defined !' TYPE 'W'.
     ENDIF.

@@ -20,13 +20,14 @@ ENDCLASS.
 CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
 
   METHOD constructor.
+
     super->constructor( ).
     " Initialization of the classes for specific controller
     me->mo_model = NEW zcl_mvc_sc0100_model( ).
-    me->mo_view  = NEW zcl_mvc_sc0100_view( ).
 
     " set the screen information then enable in the process after input
     me->set_status_and_title( iv_scr_nr = '0100' iv_gui_status = '' iv_titlebar = '' ).
+
   ENDMETHOD.
 
   METHOD zif_mvc_root_controller~pai.

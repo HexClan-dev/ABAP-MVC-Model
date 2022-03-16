@@ -2,11 +2,11 @@ INTERFACE zif_mvc_root_view
   PUBLIC .
 
   METHODS:
-    set_parameters
+    update_parameters
       IMPORTING
         ir_data_param TYPE any.
 
-  METHODS assign_parameters
+  METHODS get_parameters
     CHANGING
       cs_input_paramters TYPE any.
 
@@ -14,6 +14,11 @@ INTERFACE zif_mvc_root_view
     IMPORTING
       ir_param_value TYPE any
       iv_param_name  TYPE string.
+
+  METHODS add_parameters
+    IMPORTING
+      ir_params TYPE any.
+
 
 
 ENDINTERFACE.
