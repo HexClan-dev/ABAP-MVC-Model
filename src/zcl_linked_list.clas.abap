@@ -8,11 +8,13 @@ CLASS zcl_linked_list DEFINITION
       offer_first
         IMPORTING
                   iv_item_name   TYPE string
+                  io_object      TYPE REF TO zif_linked_list
         RETURNING VALUE(ro_item) TYPE REF TO zif_linked_list,
 
       offer_last
         IMPORTING
                   iv_item_name   TYPE string
+                  io_object      TYPE REF TO zif_linked_list
         RETURNING VALUE(ro_item) TYPE REF TO zif_linked_list,
 
       get_item
@@ -83,13 +85,7 @@ CLASS zcl_linked_list DEFINITION
                   iv_item_uuid          TYPE ty_uuid OPTIONAL
                   iv_item_name          TYPE string OPTIONAL
                     PREFERRED PARAMETER iv_item_uuid
-        RETURNING VALUE(rs_deleted_itm) TYPE ty_s_list,
-
-      create_object
-        IMPORTING
-                  iv_class_name    TYPE string
-        RETURNING VALUE(ro_object) TYPE REF TO zif_linked_list
-        .
+        RETURNING VALUE(rs_deleted_itm) TYPE ty_s_list.
 
 ENDCLASS.
 
@@ -141,7 +137,7 @@ CLASS zcl_linked_list IMPLEMENTATION.
     DATA: ls_item TYPE ty_s_list.
 
     ls_item-id = me->generate_uuid( ).
-    ls_item-object = me->create_object( iv_item_name ).
+    ls_item-object = io_object.
     ls_item-object_name = iv_item_name."me->get_object_name( io_item ).
 
     IF mv_first_item_id IS INITIAL AND mv_last_item_id IS INITIAL.
@@ -174,7 +170,7 @@ CLASS zcl_linked_list IMPLEMENTATION.
     DATA: ls_item TYPE ty_s_list.
 
     ls_item-id = me->generate_uuid( ).
-    ls_item-object = me->create_object( iv_item_name ).
+    ls_item-object = io_object.
     ls_item-object_name = iv_item_name."me->get_object_name( io_item ).
 
     IF mv_first_item_id IS INITIAL AND mv_last_item_id IS INITIAL.
@@ -261,18 +257,6 @@ CLASS zcl_linked_list IMPLEMENTATION.
     ELSE.
       rv_updated = abap_false.
     ENDIF.
-  ENDMETHOD.
-
-  METHOD create_object.
-    " Create objects dynamically
-    DATA: lo_ref TYPE REF TO zif_linked_list.
-    TRY.
-        CREATE OBJECT lo_ref TYPE (iv_class_name).
-        ro_object = lo_ref.
-      CATCH cx_root.
-        " Handle in case that the object is not created
-    ENDTRY.
-
   ENDMETHOD.
 
   METHOD read_item.

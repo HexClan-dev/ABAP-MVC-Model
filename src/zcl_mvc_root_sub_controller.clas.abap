@@ -4,7 +4,7 @@ CLASS zcl_mvc_root_sub_controller DEFINITION INHERITING FROM zcl_mvc_root_contro
 
   PUBLIC SECTION.
 
-*    INTERFACES: zif_mvc_root_controller.
+    DATA: mv_sub_src TYPE sydynnr.
 
     METHODS set_active IMPORTING iv_active TYPE abap_bool DEFAULT abap_true.
     METHODS is_active   RETURNING VALUE(rv_is_active) TYPE abap_bool.
@@ -30,7 +30,6 @@ CLASS zcl_mvc_root_sub_controller DEFINITION INHERITING FROM zcl_mvc_root_contro
 
 
   PRIVATE SECTION.
-    DATA: mv_sub_src TYPE sydynnr.
     DATA: mv_is_active TYPE abap_bool VALUE abap_true.
 
 

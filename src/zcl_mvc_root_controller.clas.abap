@@ -1,29 +1,36 @@
-CLASS zcl_mvc_root_controller DEFINITION ABSTRACT
+CLASS zcl_mvc_root_controller DEFINITION
   PUBLIC
+  ABSTRACT
   CREATE PUBLIC .
 
   PUBLIC SECTION.
 
-    INTERFACES: zif_parameters.
+    INTERFACES zif_parameters .
+    INTERFACES zif_linked_list .
 
-    CONSTANTS: gc_screen_type_normal VALUE 'NORMAL',
-               gc_screen_type_subscr VALUE 'SUBSCREEN',
-               gc_screen_type_modal  VALUE 'MODAL'.
+    ALIASES initialize
+      FOR zif_linked_list~initialize .
 
-    METHODS:
-      constructor,
-      set_status_and_title
-        IMPORTING
-          iv_scr_nr      TYPE sydynnr       OPTIONAL
-          iv_gui_status  TYPE gui_status    OPTIONAL
-          iv_titlebar    TYPE gui_title     OPTIONAL
-          iv_screen_type TYPE c DEFAULT gc_screen_type_normal.
+    ALIASES initialize_view
+      FOR zif_linked_list~initialize_view .
 
+
+    CONSTANTS gc_screen_type_normal TYPE c VALUE 'NORMAL' ##NO_TEXT.
+    CONSTANTS gc_screen_type_subscr TYPE c VALUE 'SUBSCREEN' ##NO_TEXT.
+    CONSTANTS gc_screen_type_modal TYPE c VALUE 'MODAL' ##NO_TEXT.
+
+    METHODS set_status_and_title
+      IMPORTING
+        !iv_scr_nr      TYPE sydynnr OPTIONAL
+        !iv_gui_status  TYPE gui_status OPTIONAL
+        !iv_titlebar    TYPE gui_title OPTIONAL
+        !iv_screen_type TYPE c DEFAULT gc_screen_type_normal .
   PROTECTED SECTION.
 
     METHODS:
       enable_gui_status,
       enable_titlebar.
+
 
     DATA:
       mo_view  TYPE REF TO zif_mvc_root_view,
@@ -41,16 +48,38 @@ CLASS zcl_mvc_root_controller DEFINITION ABSTRACT
 ENDCLASS.
 
 
+
 CLASS zcl_mvc_root_controller IMPLEMENTATION.
 
+  METHOD initialize_view.
 
-  METHOD constructor.
     " Create a View Controller automatically
     " If it has not been created before
+    IF io_view IS SUPPLIED.
+      me->mo_view = io_view.
+    ENDIF.
+
     IF me->mo_view IS NOT BOUND.
       me->mo_view = NEW zcl_mvc_root_view( ).
     ENDIF.
 
+  ENDMETHOD.
+
+  METHOD initialize.
+    " To be Implemented in sub-classes
+  ENDMETHOD.
+
+  METHOD enable_titlebar.
+    IF me->mv_titlebar IS NOT INITIAL.
+      SET TITLEBAR me->mv_titlebar.
+    ENDIF.
+  ENDMETHOD.
+
+
+  METHOD enable_gui_status.
+    IF me->mv_gui_status IS NOT INITIAL.
+      SET PF-STATUS me->mv_gui_status.
+    ENDIF.
   ENDMETHOD.
 
 
@@ -62,28 +91,6 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
     me->mv_scr_type = iv_screen_type.
   ENDMETHOD.
 
-  METHOD enable_gui_status.
-    IF me->mv_gui_status IS NOT INITIAL.
-      SET PF-STATUS me->mv_gui_status.
-    ENDIF.
-  ENDMETHOD.
-
-  METHOD enable_titlebar.
-    IF me->mv_titlebar IS NOT INITIAL.
-      SET TITLEBAR me->mv_titlebar.
-    ENDIF.
-  ENDMETHOD.
-
-  METHOD zif_parameters~get_parameters.
-    IF me->mo_view IS BOUND.
-      me->mo_view->get_parameters(
-        CHANGING
-          cs_input_paramters = cs_input_paramters
-      ).
-    ELSE.
-      MESSAGE 'View is not defined !' TYPE 'W'.
-    ENDIF.
-  ENDMETHOD.
 
   METHOD zif_parameters~add_parameter.
 
@@ -96,6 +103,19 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
+
+  METHOD zif_parameters~get_parameters.
+    IF me->mo_view IS BOUND.
+      me->mo_view->get_parameters(
+        CHANGING
+          cs_input_paramters = cs_input_paramters
+      ).
+    ELSE.
+      MESSAGE 'View is not defined !' TYPE 'W'.
+    ENDIF.
+  ENDMETHOD.
+
 
   METHOD zif_parameters~set_parameters.
     IF me->mo_view IS BOUND.

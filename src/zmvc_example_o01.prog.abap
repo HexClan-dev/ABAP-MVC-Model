@@ -11,7 +11,7 @@
 *&---------------------------------------------------------------------*
 MODULE status_0100 OUTPUT.
 
-  mo_mng->get_con_dynpro( )->pbo( CHANGING cs_input_paramters = gs_scr100_param ).
+  mo_mng->get_con_dynpro( )->pbo( CHANGING cs_input_paramters = gs_main_param ).
 
 ENDMODULE.
 
@@ -24,6 +24,18 @@ ENDMODULE.
 *&---------------------------------------------------------------------*
 MODULE status_0110 OUTPUT.
 
-  mo_mng->get_con_dynpro( '0110' )->pbo( CHANGING cs_input_paramters = gs_scr_110_param ).
+  mo_mng->get_con_dynpro( '0110' )->pbo( CHANGING cs_input_paramters = gs_main_param ).
+
+ENDMODULE.
+
+
+*&---------------------------------------------------------------------*
+*& Module STATUS_0111 OUTPUT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+MODULE status_0111 OUTPUT.
+
+  mo_mng->get_con_dynpro( )->pbo( CHANGING cs_input_paramters = gs_main_param ).
 
 ENDMODULE.

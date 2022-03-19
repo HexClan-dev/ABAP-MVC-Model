@@ -4,7 +4,9 @@ CLASS zcl_mvc_mng_controller DEFINITION FINAL
 
   PUBLIC SECTION.
 
-    INTERFACES: zif_linked_list.
+
+    CONSTANTS gc_view_mode_single TYPE c VALUE 'S' ##NO_TEXT.
+    CONSTANTS gc_view_mode_screen TYPE c VALUE 'M' ##NO_TEXT.
 
     CLASS-METHODS:
       s_factory RETURNING VALUE(ro_mng) TYPE REF TO zcl_mvc_mng_controller.
@@ -19,6 +21,10 @@ CLASS zcl_mvc_mng_controller DEFINITION FINAL
                     PREFERRED PARAMETER iv_scr_nr
         RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_root_controller,
 
+      set_view_mode
+        IMPORTING
+          iv_view_mode TYPE c,
+
       set_mvc_pattern
         IMPORTING
           iv_class_name TYPE string
@@ -26,24 +32,36 @@ CLASS zcl_mvc_mng_controller DEFINITION FINAL
 
   PROTECTED SECTION.
 
-private section.
+  PRIVATE SECTION.
 
-  data MO_CONTROLLER_LIST type ref to ZCL_LINKED_LIST .
-  data MV_CLASS_MODEL_NAME type STRING .
-  data MV_PATTERN type C .
-  class-data MO_FACTORY type ref to ZCL_MVC_MNG_CONTROLLER .
+    DATA mo_controller_list TYPE REF TO zcl_linked_list .
+    DATA mv_class_model_name TYPE string .
+    DATA mv_pattern TYPE c .
+    DATA mv_view_mode TYPE c .
 
-  methods CREATE_NEW_CONTROLLER .
-  methods CONVERT_TO_CL_NAME
-    importing
-      !IV_SCR_NR type SYDYNNR
-    returning
-      value(RV_CL_NAME) type STRING .
+    CLASS-DATA mo_factory TYPE REF TO zcl_mvc_mng_controller .
+
+    DATA:
+      mo_view  TYPE REF TO zif_mvc_root_view.
+
+
+    METHODS create_object
+      IMPORTING
+                iv_class_name    TYPE string
+      RETURNING VALUE(ro_object) TYPE REF TO zif_linked_list.
+
+    METHODS create_view_model .
+    METHODS convert_to_cl_name
+      IMPORTING
+        !iv_scr_nr        TYPE sydynnr
+      RETURNING
+        VALUE(rv_cl_name) TYPE string .
+
 ENDCLASS.
 
 
 
-CLASS ZCL_MVC_MNG_CONTROLLER IMPLEMENTATION.
+CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -58,8 +76,15 @@ CLASS ZCL_MVC_MNG_CONTROLLER IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD create_new_controller.
-*    me->mo_controller_list->offer_first( iv_item_name = '' ).
+  METHOD create_view_model.
+
+    IF me->mv_view_mode = gc_view_mode_single.
+      " Single View to Store all the Necessary Parameters
+      me->mo_view = NEW zcl_mvc_root_view( ).
+    ELSE.
+      " For Screen View Mode, each screen will store is own parameter information
+    ENDIF.
+
   ENDMETHOD.
 
 
@@ -76,12 +101,41 @@ CLASS ZCL_MVC_MNG_CONTROLLER IMPLEMENTATION.
       lv_class_name = iv_class_name.
     ENDIF.
 
+    "Theck if the controller exist on the created list
     IF me->mo_controller_list->exists( lv_class_name ) EQ abap_true.
       ro_controller ?= me->mo_controller_list->get_item( iv_item_name = lv_class_name ).
     ELSE.
-      "TODO -> Check if the controller exist on the linked list
-      ro_controller ?= me->mo_controller_list->offer_last( lv_class_name ).
+      " New Controller Creation
+      DATA(lv_class_created) = me->create_object( iv_class_name = lv_class_name ).
+
+      ro_controller ?= me->mo_controller_list->offer_last( io_object = lv_class_created iv_item_name = lv_class_name ).
     ENDIF.
+
+  ENDMETHOD.
+
+  METHOD create_object.
+    " Create objects dynamically
+    DATA: lo_ref TYPE REF TO zif_linked_list.
+    TRY.
+        CREATE OBJECT lo_ref TYPE (iv_class_name).
+
+        IF me->mv_view_mode = gc_view_mode_single.
+          " Single View for all screens
+          lo_ref->initialize_view(
+              io_view = me->mo_view
+          ).
+        ELSE.
+          " Each view has its own view
+          lo_ref->initialize_view( ).
+        ENDIF.
+
+        " Initialize the controller
+        lo_ref->initialize( ).
+
+        ro_object = lo_ref.
+      CATCH cx_root.
+        " Handle in case that the object is not created
+    ENDTRY.
 
   ENDMETHOD.
 
@@ -102,4 +156,18 @@ CLASS ZCL_MVC_MNG_CONTROLLER IMPLEMENTATION.
     ENDIF.
     ro_mng = mo_factory.
   ENDMETHOD.
+
+  METHOD set_view_mode.
+
+    CHECK iv_view_mode = gc_view_mode_screen OR
+          iv_view_mode = gc_view_mode_single.
+
+    me->mv_view_mode = iv_view_mode.
+
+    IF iv_view_mode = gc_view_mode_single.
+      me->create_view_model( ).
+    ENDIF.
+
+  ENDMETHOD.
+
 ENDCLASS.

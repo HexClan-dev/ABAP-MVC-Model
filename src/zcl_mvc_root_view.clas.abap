@@ -53,7 +53,6 @@ CLASS zcl_mvc_root_view IMPLEMENTATION.
   ENDMETHOD.
 
 
-
   METHOD zif_mvc_root_view~add_parameters.
     " Add Multiple Parameters
     me->mo_parameters->add_parameters( is_parameters = ir_params ).
