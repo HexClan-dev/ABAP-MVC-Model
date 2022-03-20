@@ -6,13 +6,13 @@ CLASS zcl_mvc_root_controller DEFINITION
   PUBLIC SECTION.
 
     INTERFACES zif_parameters .
-    INTERFACES zif_linked_list .
+    INTERFACES zif_mvc_controller_list .
 
     ALIASES initialize
-      FOR zif_linked_list~initialize .
+      FOR zif_mvc_controller_list~initialize .
 
     ALIASES initialize_view
-      FOR zif_linked_list~initialize_view .
+      FOR zif_mvc_controller_list~initialize_view .
 
 
     CONSTANTS gc_screen_type_normal TYPE c VALUE 'NORMAL' ##NO_TEXT.

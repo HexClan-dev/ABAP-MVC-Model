@@ -2,7 +2,7 @@ INTERFACE zif_mvc_root_controller
   PUBLIC .
 
   INTERFACES:
-    zif_linked_list,
+    zif_mvc_controller_list,
     zif_parameters.
 
   METHODS:

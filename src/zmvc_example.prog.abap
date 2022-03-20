@@ -18,7 +18,6 @@ DATA: gs_main_param  TYPE ts_main_param.
 DATA: gv_ok_code LIKE sy-ucomm,
       gv_sub_scr LIKE sy-dynnr.
 
-gs_main_param-screen_nr = '0100'.
 
 START-OF-SELECTION.
 

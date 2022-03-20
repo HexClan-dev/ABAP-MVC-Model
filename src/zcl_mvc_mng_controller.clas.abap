@@ -14,7 +14,7 @@ CLASS zcl_mvc_mng_controller DEFINITION FINAL
     METHODS:
       constructor,
 
-      get_con_dynpro
+      get_dynpro
         IMPORTING
                   iv_scr_nr            TYPE sydynnr OPTIONAL
                   iv_class_name        TYPE string OPTIONAL
@@ -34,7 +34,7 @@ CLASS zcl_mvc_mng_controller DEFINITION FINAL
 
   PRIVATE SECTION.
 
-    DATA mo_controller_list TYPE REF TO zcl_linked_list .
+    DATA mo_controller_list TYPE REF TO zcl_MVC_controller_list .
     DATA mv_class_model_name TYPE string .
     DATA mv_pattern TYPE c .
     DATA mv_view_mode TYPE c .
@@ -48,7 +48,7 @@ CLASS zcl_mvc_mng_controller DEFINITION FINAL
     METHODS create_object
       IMPORTING
                 iv_class_name    TYPE string
-      RETURNING VALUE(ro_object) TYPE REF TO zif_linked_list.
+      RETURNING VALUE(ro_object) TYPE REF TO zif_mvc_controller_list.
 
     METHODS create_view_model .
     METHODS convert_to_cl_name
@@ -65,7 +65,7 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
 
   METHOD constructor.
-    mo_controller_list = NEW zcl_linked_list( ).
+    mo_controller_list = NEW zcl_MVC_controller_list( ).
   ENDMETHOD.
 
 
@@ -88,7 +88,7 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD get_con_dynpro.
+  METHOD get_dynpro.
     " Generate a controller form the screen number
     IF iv_class_name IS NOT SUPPLIED.
       IF iv_scr_nr IS SUPPLIED.
@@ -115,7 +115,7 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
   METHOD create_object.
     " Create objects dynamically
-    DATA: lo_ref TYPE REF TO zif_linked_list.
+    DATA: lo_ref TYPE REF TO zif_mvc_controller_list.
     TRY.
         CREATE OBJECT lo_ref TYPE (iv_class_name).
 
