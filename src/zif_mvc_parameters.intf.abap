@@ -12,6 +12,12 @@ INTERFACE zif_mvc_parameters
         cs_input_paramters TYPE any.
 
   METHODS:
+    delete_parameter
+      IMPORTING
+        !iv_parameter TYPE char50.
+
+
+  METHODS:
     add_parameter
       IMPORTING
         iv_param_name TYPE string

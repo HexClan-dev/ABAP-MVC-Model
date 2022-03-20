@@ -1,7 +1,7 @@
 INTERFACE zif_subscreen_controller
   PUBLIC .
 
-  INTERFACES: zif_mvc_root_controller.
+  INTERFACES: zif_mvc_controller.
 
   " Note the parameters are assigned before the controller is called
   METHODS:

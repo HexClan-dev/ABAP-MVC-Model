@@ -6,7 +6,7 @@ CLASS zcl_mvc_sc0111_controller DEFINITION
 
   PUBLIC SECTION.
 
-    INTERFACES zif_mvc_root_controller .
+    INTERFACES zif_mvc_controller .
 
     METHODS controller .
 
@@ -27,7 +27,7 @@ CLASS zcl_mvc_sc0111_controller IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_mvc_root_controller~pai.
+  METHOD zif_mvc_controller~pai.
 
     "PAI checking for Subscreen Controller
     CASE iv_ok_code.
@@ -38,13 +38,8 @@ CLASS zcl_mvc_sc0111_controller IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD  zif_mvc_root_controller~pbo.
+  METHOD  zif_mvc_controller~pbo.
     " Read database information from the Model
-
-*    me->get_parameters(
-*      CHANGING
-*        cs_input_paramters = cs_input_paramters
-*    ).
 
   ENDMETHOD.
 ENDCLASS.

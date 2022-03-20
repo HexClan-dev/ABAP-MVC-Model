@@ -1,4 +1,4 @@
-INTERFACE zif_mvc_root_controller
+INTERFACE zif_mvc_controller
   PUBLIC .
 
   INTERFACES:

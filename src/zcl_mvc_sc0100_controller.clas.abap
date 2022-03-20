@@ -6,7 +6,7 @@ CLASS zcl_mvc_sc0100_controller DEFINITION
 
   PUBLIC SECTION.
 
-    INTERFACES zif_mvc_root_controller .
+    INTERFACES zif_mvc_controller .
 
 
   PROTECTED SECTION.
@@ -37,8 +37,8 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_mvc_root_controller~pai.
-*    me->set_parameters( ir_data_param = ir_data_param ).
+  METHOD zif_mvc_controller~pai.
+  " PAI
 
     CASE iv_ok_code.
       WHEN 'IB'.
@@ -48,13 +48,8 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_mvc_root_controller~pbo.
+  METHOD zif_mvc_controller~pbo.
     " PBO -> logic implementation
-
-*    me->get_parameters(
-*      CHANGING
-*        cs_input_paramters = cs_input_paramters
-*    ).
 
   ENDMETHOD.
 ENDCLASS.

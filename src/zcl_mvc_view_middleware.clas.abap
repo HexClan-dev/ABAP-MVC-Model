@@ -9,38 +9,38 @@ CLASS zcl_mvc_view_middleware DEFINITION
 
       constructor
         IMPORTING
-          io_controller TYPE REF TO zif_mvc_root_controller.
+          io_controller TYPE REF TO zif_mvc_controller.
 
     METHODS:
       get_params
         CHANGING  cs_parameter         TYPE any OPTIONAL
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_root_controller.
+        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
     METHODS:
       set_params
         IMPORTING is_parameter         TYPE any OPTIONAL
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_root_controller.
+        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
     METHODS:
       update_params
         CHANGING  cs_parameter         TYPE any OPTIONAL
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_root_controller.
+        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
 
     METHODS:
       controller
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_root_controller.
+        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
     METHODS:
       delete_params
         IMPORTING iv_param_name        TYPE char50
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_root_controller.
+        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
   PROTECTED SECTION.
 
   PRIVATE SECTION.
 
-    DATA: mo_controller TYPE REF TO zif_mvc_root_controller.
+    DATA: mo_controller TYPE REF TO zif_mvc_controller.
 
 
     METHODS: middleware

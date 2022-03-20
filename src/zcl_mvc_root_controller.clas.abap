@@ -13,7 +13,8 @@ CLASS zcl_mvc_root_controller DEFINITION
       FINAL METHODS
       add_parameter
       get_parameters
-      set_parameters.
+      set_parameters
+      delete_parameter.
 
     INTERFACES zif_mvc_controller_list
       FINAL METHODS
@@ -32,7 +33,8 @@ CLASS zcl_mvc_root_controller DEFINITION
       FOR zif_mvc_parameters~get_parameters.
     ALIASES add_parameter
        FOR zif_mvc_parameters~add_parameter.
-
+    ALIASES delete_parameter
+       FOR zif_mvc_parameters~delete_parameter.
 
 
 
@@ -156,6 +158,13 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
     ELSE.
       MESSAGE 'View is not defined !' TYPE 'W'.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD delete_parameter.
+    CHECK me->mo_view IS BOUND.
+
+    me->mo_view->delete_parameter( iv_parameter = iv_parameter ).
+
   ENDMETHOD.
 
   METHOD get_view.

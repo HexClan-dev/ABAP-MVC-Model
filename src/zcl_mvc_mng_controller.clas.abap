@@ -6,7 +6,7 @@ CLASS zcl_mvc_mng_controller DEFINITION
   PUBLIC SECTION.
 
 
-    CONSTANTS gc_view_mode_single TYPE c VALUE 'S' ##NO_TEXT.
+    CONSTANTS gc_view_mode_single TYPE c VALUE 'S' ##NO_TEXT. " Default
     CONSTANTS gc_view_mode_screen TYPE c VALUE 'M' ##NO_TEXT.
 
     CLASS-METHODS:
@@ -58,6 +58,10 @@ CLASS zcl_mvc_mng_controller DEFINITION
       RETURNING
         VALUE(rv_cl_name) TYPE string .
 
+    METHODS:
+      set_default_view_mode,
+      check_view_mode.
+
 ENDCLASS.
 
 
@@ -91,7 +95,7 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
   METHOD get_dynpro.
     " Generate a controller form the screen number
-    DATA:  lo_controller TYPE REF TO zif_mvc_root_controller.
+    DATA:  lo_controller TYPE REF TO zif_mvc_controller.
 
     IF iv_class_name IS NOT SUPPLIED.
       IF iv_scr_nr IS SUPPLIED.
@@ -125,13 +129,16 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
     TRY.
         CREATE OBJECT lo_ref TYPE (iv_class_name).
 
+        " Check View Mode and Assign Default One if not defined
+        me->check_view_mode( ).
+
         IF me->mv_view_mode = gc_view_mode_single.
           " Single View for all screens
           lo_ref->initialize_view(
               io_view = me->mo_view
           ).
         ELSE.
-          " Each view has its own view
+          " Each view has its own parameters
           lo_ref->initialize_view( ).
         ENDIF.
 
@@ -170,10 +177,25 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
     me->mv_view_mode = iv_view_mode.
 
-    IF iv_view_mode = gc_view_mode_single.
+    me->set_default_view_mode( ).
+
+  ENDMETHOD.
+
+
+  METHOD set_default_view_mode.
+    IF me->mv_view_mode = gc_view_mode_single OR
+        me->mv_view_mode IS INITIAL.
       me->create_view_model( ).
     ENDIF.
+  ENDMETHOD.
 
+
+  METHOD check_view_mode.
+    IF me->mv_view_mode IS INITIAL.
+      " Default View Mode Types
+      me->mv_view_mode = gc_view_mode_single.
+      me->set_default_view_mode( ).
+    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.

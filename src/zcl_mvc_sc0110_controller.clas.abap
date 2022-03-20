@@ -6,7 +6,7 @@ CLASS zcl_mvc_sc0110_controller DEFINITION INHERITING FROM zcl_mvc_root_sub_cont
   PUBLIC SECTION.
 
     INTERFACES:
-      zif_mvc_root_controller.
+      zif_mvc_controller.
 
     METHODS: controller.
 
@@ -26,18 +26,15 @@ CLASS zcl_mvc_sc0110_controller IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD  zif_mvc_root_controller~pbo.
-    " Read database information from the Model
-
+  METHOD  zif_mvc_controller~pbo.
+    " PBO
 
   ENDMETHOD.
 
-  METHOD zif_mvc_root_controller~pai.
+  METHOD zif_mvc_controller~pai.
 
-   " Update Parameter Values
-*   me->zif_mvc_parameters~set_parameters( ir_data_param = ir_data_param  ).
-
-   me->add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0111').
+    " Update SCREEN_Number Value
+    me->add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0111').
 
     "PAI checking for Subscreen Controller
     CASE iv_ok_code.
