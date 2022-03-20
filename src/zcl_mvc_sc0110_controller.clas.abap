@@ -35,9 +35,9 @@ CLASS zcl_mvc_sc0110_controller IMPLEMENTATION.
   METHOD zif_mvc_root_controller~pai.
 
    " Update Parameter Values
-   me->zif_mvc_parameters~set_parameters( ir_data_param = ir_data_param  ).
+*   me->zif_mvc_parameters~set_parameters( ir_data_param = ir_data_param  ).
 
-   me->zif_mvc_parameters~add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0111').
+   me->add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0111').
 
     "PAI checking for Subscreen Controller
     CASE iv_ok_code.

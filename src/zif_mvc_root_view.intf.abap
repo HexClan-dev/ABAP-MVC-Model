@@ -10,6 +10,10 @@ INTERFACE zif_mvc_root_view
     CHANGING
       cs_input_paramters TYPE any.
 
+  METHODS delete_parameter
+    IMPORTING
+      !iv_parameter TYPE char50.
+
   METHODS add_parameter
     IMPORTING
       ir_param_value TYPE any

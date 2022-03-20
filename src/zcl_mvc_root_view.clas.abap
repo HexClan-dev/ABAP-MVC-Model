@@ -5,10 +5,11 @@ CLASS zcl_mvc_root_view DEFINITION
   PUBLIC SECTION.
 
     INTERFACES: zif_mvc_root_view FINAL METHODS
-        add_parameter
-        add_parameters
-        get_parameters
-        update_parameters.
+      add_parameter
+      add_parameters
+      get_parameters
+      update_parameters
+      delete_parameter.
 
 
     ALIASES update_parameters
@@ -17,12 +18,15 @@ CLASS zcl_mvc_root_view DEFINITION
     ALIASES get_parameters
       FOR zif_mvc_root_view~get_parameters.
 
-
     ALIASES add_parameter
       FOR zif_mvc_root_view~add_parameter.
 
     ALIASES add_parameters
       FOR zif_mvc_root_view~add_parameters.
+
+    ALIASES delete_parameter
+      FOR zif_mvc_root_view~delete_parameter.
+
 
     METHODS: constructor.
 
@@ -74,6 +78,12 @@ CLASS zcl_mvc_root_view IMPLEMENTATION.
   METHOD add_parameters.
     " Add Multiple Parameters
     me->mo_parameters->add_parameters( is_parameters = ir_params ).
+  ENDMETHOD.
+
+
+  METHOD delete_parameter.
+    " Add Multiple Parameters
+    me->mo_parameters->remove_parameter( iv_parameter = iv_parameter ).
   ENDMETHOD.
 
 ENDCLASS.

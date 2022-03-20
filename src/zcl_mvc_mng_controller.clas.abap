@@ -17,10 +17,10 @@ CLASS zcl_mvc_mng_controller DEFINITION
 
       get_dynpro
         IMPORTING
-                  iv_scr_nr            TYPE sydynnr OPTIONAL
-                  iv_class_name        TYPE string OPTIONAL
+                  iv_scr_nr        TYPE sydynnr OPTIONAL
+                  iv_class_name    TYPE string OPTIONAL
                     PREFERRED PARAMETER iv_scr_nr
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_root_controller,
+        RETURNING VALUE(ro_params) TYPE REF TO zcl_mvc_view_middleware,
 
       set_view_mode
         IMPORTING
@@ -35,7 +35,7 @@ CLASS zcl_mvc_mng_controller DEFINITION
 
   PRIVATE SECTION.
 
-    DATA mo_controller_list TYPE REF TO zcl_MVC_controller_list .
+    DATA mo_controller_list TYPE REF TO zcl_mvc_controller_list .
     DATA mv_class_model_name TYPE string .
     DATA mv_pattern TYPE c .
     DATA mv_view_mode TYPE c .
@@ -66,7 +66,7 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
 
   METHOD constructor.
-    mo_controller_list = NEW zcl_MVC_controller_list( ).
+    mo_controller_list = NEW zcl_mvc_controller_list( ).
   ENDMETHOD.
 
 
@@ -91,6 +91,8 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
   METHOD get_dynpro.
     " Generate a controller form the screen number
+    DATA:  lo_controller TYPE REF TO zif_mvc_root_controller.
+
     IF iv_class_name IS NOT SUPPLIED.
       IF iv_scr_nr IS SUPPLIED.
         DATA(lv_scr_nr) = iv_scr_nr.
@@ -104,13 +106,16 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
     "Theck if the controller exist on the created list
     IF me->mo_controller_list->exists( lv_class_name ) EQ abap_true.
-      ro_controller ?= me->mo_controller_list->get_item( iv_item_name = lv_class_name ).
+      lo_controller ?= me->mo_controller_list->get_item( iv_item_name = lv_class_name ).
     ELSE.
       " New Controller Creation
       DATA(lv_class_created) = me->create_object( iv_class_name = lv_class_name ).
 
-      ro_controller ?= me->mo_controller_list->offer_last( io_object = lv_class_created iv_item_name = lv_class_name ).
+      lo_controller ?= me->mo_controller_list->offer_last( io_object = lv_class_created iv_item_name = lv_class_name ).
     ENDIF.
+
+    " View Middleware Controller
+    ro_params = NEW zcl_mvc_view_middleware( io_controller = lo_controller ).
 
   ENDMETHOD.
 

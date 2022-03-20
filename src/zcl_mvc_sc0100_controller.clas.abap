@@ -38,7 +38,7 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
 
 
   METHOD zif_mvc_root_controller~pai.
-    me->set_parameters( ir_data_param = ir_data_param ).
+*    me->set_parameters( ir_data_param = ir_data_param ).
 
     CASE iv_ok_code.
       WHEN 'IB'.
@@ -51,10 +51,10 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
   METHOD zif_mvc_root_controller~pbo.
     " PBO -> logic implementation
 
-    me->get_parameters(
-      CHANGING
-        cs_input_paramters = cs_input_paramters
-    ).
+*    me->get_parameters(
+*      CHANGING
+*        cs_input_paramters = cs_input_paramters
+*    ).
 
   ENDMETHOD.
 ENDCLASS.

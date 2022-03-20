@@ -43,6 +43,10 @@ CLASS zcl_mvc_root_controller DEFINITION
         !iv_titlebar    TYPE gui_title OPTIONAL
         !iv_screen_type TYPE c DEFAULT gc_screen_type_normal .
 
+    METHODS:
+      get_view FINAL
+        RETURNING VALUE(ro_view) TYPE REF TO zif_mvc_root_view.
+
   PROTECTED SECTION.
 
     DATA mo_view TYPE REF TO zif_mvc_root_view .
@@ -153,4 +157,9 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
       MESSAGE 'View is not defined !' TYPE 'W'.
     ENDIF.
   ENDMETHOD.
+
+  METHOD get_view.
+    ro_view = me->mo_view.
+  ENDMETHOD.
+
 ENDCLASS.

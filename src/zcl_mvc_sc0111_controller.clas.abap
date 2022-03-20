@@ -41,11 +41,10 @@ CLASS zcl_mvc_sc0111_controller IMPLEMENTATION.
   METHOD  zif_mvc_root_controller~pbo.
     " Read database information from the Model
 
-    me->get_parameters(
-      CHANGING
-        cs_input_paramters = cs_input_paramters
-    ).
-
+*    me->get_parameters(
+*      CHANGING
+*        cs_input_paramters = cs_input_paramters
+*    ).
 
   ENDMETHOD.
 ENDCLASS.

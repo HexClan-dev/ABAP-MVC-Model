@@ -11,7 +11,9 @@
 *----------------------------------------------------------------------*
 MODULE user_command_0100 INPUT.
 
-  mo_mng->get_dynpro( )->pai(  ir_data_param = gs_main_param iv_ok_code = gv_ok_code ).
+  mo_mng->get_dynpro( )->set_params(
+    gs_main_param
+  )->pai( iv_ok_code = gv_ok_code ).
 
 ENDMODULE.
 
@@ -25,7 +27,9 @@ ENDMODULE.
 *----------------------------------------------------------------------*
 MODULE user_command_0110 INPUT.
 
-  mo_mng->get_dynpro( )->pai(  ir_data_param = gs_main_param iv_ok_code = gv_ok_code ).
+  mo_mng->get_dynpro( )->set_params(
+    gs_main_param
+  )->pai( iv_ok_code = gv_ok_code ).
 
 ENDMODULE.
 
