@@ -27,11 +27,9 @@ ENDCLASS.
 CLASS zcl_mvc_view_middleware IMPLEMENTATION.
 
 
-
-
-
-
   METHOD params.
+
+
 
   ENDMETHOD.
 

@@ -3,8 +3,26 @@ CLASS zcl_mvc_root_view DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    INTERFACES: zif_mvc_root_view.
 
+    INTERFACES: zif_mvc_root_view FINAL METHODS
+        add_parameter
+        add_parameters
+        get_parameters
+        update_parameters.
+
+
+    ALIASES update_parameters
+      FOR zif_mvc_root_view~update_parameters.
+
+    ALIASES get_parameters
+      FOR zif_mvc_root_view~get_parameters.
+
+
+    ALIASES add_parameter
+      FOR zif_mvc_root_view~add_parameter.
+
+    ALIASES add_parameters
+      FOR zif_mvc_root_view~add_parameters.
 
     METHODS: constructor.
 
@@ -28,13 +46,13 @@ CLASS zcl_mvc_root_view IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_mvc_root_view~update_parameters.
+  METHOD update_parameters.
     " Generic input structure
     me->mo_parameters->update_parameters( is_parameters = ir_data_param ).
 
   ENDMETHOD.
 
-  METHOD zif_mvc_root_view~add_parameter.
+  METHOD add_parameter.
     " Add Parameter
     DATA: ls_parameter_structure TYPE zcl_mvc_parameters=>ty_parameter.
 
@@ -43,7 +61,7 @@ CLASS zcl_mvc_root_view IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD zif_mvc_root_view~get_parameters.
+  METHOD get_parameters.
     " Get the Assigned Parameters
     me->mo_parameters->get_parameters(
       CHANGING
@@ -53,7 +71,7 @@ CLASS zcl_mvc_root_view IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_mvc_root_view~add_parameters.
+  METHOD add_parameters.
     " Add Multiple Parameters
     me->mo_parameters->add_parameters( is_parameters = ir_params ).
   ENDMETHOD.

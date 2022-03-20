@@ -9,6 +9,7 @@ CLASS zcl_mvc_sc0111_controller DEFINITION
     INTERFACES zif_mvc_root_controller .
 
     METHODS controller .
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 
@@ -40,7 +41,7 @@ CLASS zcl_mvc_sc0111_controller IMPLEMENTATION.
   METHOD  zif_mvc_root_controller~pbo.
     " Read database information from the Model
 
-    me->zif_parameters~get_parameters(
+    me->get_parameters(
       CHANGING
         cs_input_paramters = cs_input_paramters
     ).

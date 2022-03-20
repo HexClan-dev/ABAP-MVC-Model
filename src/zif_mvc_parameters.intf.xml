@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOINTERF>
-    <CLSNAME>ZIF_PARAMETERS</CLSNAME>
+    <CLSNAME>ZIF_MVC_PARAMETERS</CLSNAME>
     <LANGU>E</LANGU>
     <DESCRIPT>MVC Parameter Controller</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>

@@ -8,9 +8,9 @@ CLASS zcl_mvc_sc0100_controller DEFINITION
 
     INTERFACES zif_mvc_root_controller .
 
-    METHODS initialize REDEFINITION.
 
   PROTECTED SECTION.
+    METHODS initialize REDEFINITION.
 
 
   PRIVATE SECTION.
@@ -32,13 +32,13 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
     me->set_status_and_title( iv_scr_nr = '0110' iv_gui_status = '' iv_titlebar = '' ).
 
     "initialize the GLobal parameter
-    me->zif_parameters~add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0110').
+    me->add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0110').
 
   ENDMETHOD.
 
 
   METHOD zif_mvc_root_controller~pai.
-    me->zif_parameters~set_parameters( ir_data_param = ir_data_param ).
+    me->set_parameters( ir_data_param = ir_data_param ).
 
     CASE iv_ok_code.
       WHEN 'IB'.
@@ -51,7 +51,7 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
   METHOD zif_mvc_root_controller~pbo.
     " PBO -> logic implementation
 
-    me->zif_parameters~get_parameters(
+    me->get_parameters(
       CHANGING
         cs_input_paramters = cs_input_paramters
     ).

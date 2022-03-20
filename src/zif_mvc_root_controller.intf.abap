@@ -3,7 +3,7 @@ INTERFACE zif_mvc_root_controller
 
   INTERFACES:
     zif_mvc_controller_list,
-    zif_parameters.
+    zif_mvc_parameters.
 
   METHODS:
     pai

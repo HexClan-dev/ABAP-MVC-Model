@@ -1,4 +1,4 @@
-INTERFACE zif_parameters
+INTERFACE zif_mvc_parameters
   PUBLIC .
 
   METHODS:

@@ -1,4 +1,5 @@
-CLASS zcl_mvc_mng_controller DEFINITION FINAL
+CLASS zcl_mvc_mng_controller DEFINITION
+  FINAL
   PUBLIC
   CREATE PRIVATE .
 
@@ -130,7 +131,7 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
         ENDIF.
 
         " Initialize the controller
-        lo_ref->initialize( ).
+        lo_ref->initialize_controller( ).
 
         ro_object = lo_ref.
       CATCH cx_root.

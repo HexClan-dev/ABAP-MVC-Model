@@ -3,15 +3,29 @@ CLASS zcl_mvc_root_model DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    INTERFACES: zif_mvc_root_model.
+    INTERFACES: zif_mvc_root_model
+        FINAL METHODS define_view.
+
+    ALIASES define_view
+      FOR zif_mvc_root_model~define_view.
+
 
   PROTECTED SECTION.
   PRIVATE SECTION.
+
+    DATA: mo_view  TYPE REF TO zif_mvc_root_view.
+
+
 ENDCLASS.
 
 
 
 CLASS zcl_mvc_root_model IMPLEMENTATION.
 
+  METHOD define_view.
+   " Add the View information
+    me->mo_view = io_view.
+
+  ENDMETHOD.
 
 ENDCLASS.
