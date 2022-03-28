@@ -5,6 +5,10 @@ CLASS zcl_mvc_sc0100_model DEFINITION INHERITING FROM zcl_mvc_root_model
 
   PUBLIC SECTION.
 
+
+    METHODS read_bp.
+
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 
@@ -16,5 +20,8 @@ ENDCLASS.
 CLASS zcl_mvc_sc0100_model IMPLEMENTATION.
 
 
+  METHOD read_bp.
+
+  ENDMETHOD.
 
 ENDCLASS.

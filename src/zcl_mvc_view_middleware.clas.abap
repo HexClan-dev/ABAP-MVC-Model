@@ -1,40 +1,31 @@
 CLASS zcl_mvc_view_middleware DEFINITION
   PUBLIC
-  FINAL
-  CREATE PUBLIC .
+  CREATE PUBLIC
+    GLOBAL FRIENDS zcl_mvc_mng_controller.
 
   PUBLIC SECTION.
 
-    METHODS:
+    INTERFACES: zif_mvc_middleware
+      ALL METHODS FINAL.
 
-      constructor
+    ALIASES get_params
+        FOR zif_mvc_middleware~get_params.
+    ALIASES set_params
+        FOR zif_mvc_middleware~set_params.
+    ALIASES update_params
+        FOR zif_mvc_middleware~update_params.
+    ALIASES delete_params
+        FOR zif_mvc_middleware~delete_params.
+
+    " Can be redefined
+    METHODS:
+      pai
         IMPORTING
-          io_controller TYPE REF TO zif_mvc_controller.
-
-    METHODS:
-      get_params
-        CHANGING  cs_parameter         TYPE any OPTIONAL
+                  iv_ok_code           LIKE sy-ucomm DEFAULT sy-ucomm
+        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller,
+      pbo
         RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
-    METHODS:
-      set_params
-        IMPORTING is_parameter         TYPE any OPTIONAL
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
-
-    METHODS:
-      update_params
-        CHANGING  cs_parameter         TYPE any OPTIONAL
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
-
-
-    METHODS:
-      controller
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
-
-    METHODS:
-      delete_params
-        IMPORTING iv_param_name        TYPE char50
-        RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
   PROTECTED SECTION.
 
@@ -46,6 +37,13 @@ CLASS zcl_mvc_view_middleware DEFINITION
     METHODS: middleware
       RETURNING VALUE(ro_view) TYPE REF TO zif_mvc_root_view.
 
+
+    METHODS:
+      set_controller
+        IMPORTING
+          io_controller TYPE REF TO zif_mvc_controller.
+
+
 ENDCLASS.
 
 
@@ -53,7 +51,7 @@ ENDCLASS.
 CLASS zcl_mvc_view_middleware IMPLEMENTATION.
 
 
-  METHOD constructor.
+  METHOD set_controller.
     " Assign the created Constructor
     me->mo_controller = io_controller.
 
@@ -100,12 +98,6 @@ CLASS zcl_mvc_view_middleware IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD controller.
-    " No parameter is defined
-    ro_controller = me->mo_controller.
-  ENDMETHOD.
-
-
 
   METHOD middleware.
     " Define the Middleware Logic for the view
@@ -115,6 +107,18 @@ CLASS zcl_mvc_view_middleware IMPLEMENTATION.
 
     ro_view = lo_controller->get_view( ).
 
+  ENDMETHOD.
+
+  METHOD pai.
+    " Call the PAI and then return controller
+    me->mo_controller->pai( iv_ok_code = iv_ok_code ).
+    ro_controller = me->mo_controller.
+  ENDMETHOD.
+
+  METHOD pbo.
+    " Call the PBO and then return controller
+    me->mo_controller->pbo( ).
+    ro_controller = me->mo_controller.
   ENDMETHOD.
 
 ENDCLASS.

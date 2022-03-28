@@ -13,7 +13,9 @@ CLASS zcl_mvc_mng_controller DEFINITION
       s_factory RETURNING VALUE(ro_mng) TYPE REF TO zcl_mvc_mng_controller.
 
     METHODS:
-      constructor,
+      constructor
+        IMPORTING
+          io_middleware TYPE REF TO zcl_mvc_view_middleware OPTIONAL,
 
       get_dynpro
         IMPORTING
@@ -35,15 +37,14 @@ CLASS zcl_mvc_mng_controller DEFINITION
 
   PRIVATE SECTION.
 
+    CLASS-DATA mo_factory TYPE REF TO zcl_mvc_mng_controller .
+
     DATA mo_controller_list TYPE REF TO zcl_mvc_controller_list .
     DATA mv_class_model_name TYPE string .
     DATA mv_pattern TYPE c .
     DATA mv_view_mode TYPE c .
-
-    CLASS-DATA mo_factory TYPE REF TO zcl_mvc_mng_controller .
-
-    DATA:
-      mo_view  TYPE REF TO zif_mvc_root_view.
+    DATA mo_view  TYPE REF TO zif_mvc_root_view.
+    DATA mo_middleware TYPE REF TO zcl_mvc_view_middleware.
 
 
     METHODS create_object
@@ -71,6 +72,14 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
   METHOD constructor.
     mo_controller_list = NEW zcl_mvc_controller_list( ).
+
+    IF io_middleware IS SUPPLIED.
+      me->mo_middleware = io_middleware.
+    ELSE.
+      " Define the Middleware
+      me->mo_middleware = NEW zcl_mvc_view_middleware( ).
+    ENDIF.
+
   ENDMETHOD.
 
 
@@ -119,7 +128,8 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
     ENDIF.
 
     " View Middleware Controller
-    ro_params = NEW zcl_mvc_view_middleware( io_controller = lo_controller ).
+    me->mo_middleware->set_controller( io_controller = lo_controller ).
+    ro_params ?= me->mo_middleware.
 
   ENDMETHOD.
 

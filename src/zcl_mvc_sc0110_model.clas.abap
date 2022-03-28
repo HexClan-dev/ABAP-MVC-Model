@@ -1,4 +1,4 @@
-CLASS zcl_mvc_sc0110_model DEFINITION
+CLASS zcl_mvc_sc0110_model DEFINITION INHERITING FROM zcl_mvc_root_model
   PUBLIC
   FINAL
   CREATE PUBLIC .
