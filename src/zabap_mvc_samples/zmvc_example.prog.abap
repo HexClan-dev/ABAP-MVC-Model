@@ -24,6 +24,7 @@ START-OF-SELECTION.
   mo_mng = zcl_mvc_mng_controller=>s_factory( ).
   mo_mng->set_mvc_pattern( iv_class_name = 'zcl_mvc_sc$_controller' iv_pattern = '$' ).
   mo_mng->set_view_mode( iv_view_mode = zcl_mvc_mng_controller=>gc_view_mode_single  ). " Default Type
+*  mo_mng->set_middleware( io_middleware =  ).
 
   CALL SCREEN 100.
 

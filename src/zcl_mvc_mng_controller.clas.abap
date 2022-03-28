@@ -13,9 +13,7 @@ CLASS zcl_mvc_mng_controller DEFINITION
       s_factory RETURNING VALUE(ro_mng) TYPE REF TO zcl_mvc_mng_controller.
 
     METHODS:
-      constructor
-        IMPORTING
-          io_middleware TYPE REF TO zcl_mvc_view_middleware OPTIONAL,
+      constructor,
 
       get_dynpro
         IMPORTING
@@ -27,6 +25,10 @@ CLASS zcl_mvc_mng_controller DEFINITION
       set_view_mode
         IMPORTING
           iv_view_mode TYPE c,
+
+      set_middleware
+        IMPORTING
+          io_middleware TYPE REF TO zcl_mvc_view_middleware,
 
       set_mvc_pattern
         IMPORTING
@@ -73,12 +75,8 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
   METHOD constructor.
     mo_controller_list = NEW zcl_mvc_controller_list( ).
 
-    IF io_middleware IS SUPPLIED.
-      me->mo_middleware = io_middleware.
-    ELSE.
-      " Define the Middleware
-      me->mo_middleware = NEW zcl_mvc_view_middleware( ).
-    ENDIF.
+    " Define the Middleware
+    me->mo_middleware = NEW zcl_mvc_view_middleware( ).
 
   ENDMETHOD.
 
@@ -159,6 +157,12 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
       CATCH cx_root.
         " Handle in case that the object is not created
     ENDTRY.
+
+  ENDMETHOD.
+
+  METHOD set_middleware.
+    " Update the middleware
+    me->mo_middleware = io_middleware.
 
   ENDMETHOD.
 

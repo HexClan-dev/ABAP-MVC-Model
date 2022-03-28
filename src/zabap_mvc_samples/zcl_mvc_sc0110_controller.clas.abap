@@ -8,10 +8,10 @@ CLASS zcl_mvc_sc0110_controller DEFINITION INHERITING FROM zcl_mvc_root_sub_cont
     INTERFACES:
       zif_mvc_controller.
 
-    METHODS: controller.
-
 
   PROTECTED SECTION.
+    METHODS: initialize REDEFINITION.
+
   PRIVATE SECTION.
 
 ENDCLASS.
@@ -20,7 +20,7 @@ ENDCLASS.
 
 CLASS zcl_mvc_sc0110_controller IMPLEMENTATION.
 
-  METHOD controller.
+  METHOD initialize.
     " set the subscreen number for the sub scr controller
     me->set_sub_screen_nr( '0110' ).
 
