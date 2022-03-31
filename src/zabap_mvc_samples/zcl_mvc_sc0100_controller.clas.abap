@@ -19,8 +19,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
-
+CLASS ZCL_MVC_SC0100_CONTROLLER IMPLEMENTATION.
 
 
   METHOD initialize.
@@ -38,11 +37,14 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
 
 
   METHOD zif_mvc_controller~pai.
-  " PAI
+    " PAI
 
     CASE iv_ok_code.
       WHEN 'IB'.
         "blabla
+
+      WHEN 'BACK' OR 'EXIT'.
+        LEAVE TO SCREEN 0.
 
     ENDCASE.
   ENDMETHOD.
