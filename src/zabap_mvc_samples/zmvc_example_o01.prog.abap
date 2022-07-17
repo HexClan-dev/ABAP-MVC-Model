@@ -11,10 +11,8 @@
 *&---------------------------------------------------------------------*
 MODULE status_0100 OUTPUT.
 
-  SET PF-STATUS 'STATUS_0111'.
-
   mo_mng->get_dynpro( )->get_params(
-        CHANGING cs_parameter = gs_main_param
+        IMPORTING es_parameter = gs_main_param
     )->pbo( ).
 
 ENDMODULE.
@@ -29,7 +27,7 @@ ENDMODULE.
 MODULE status_0110 OUTPUT.
 
 *  mo_mng->get_dynpro( '0110' )->get_params(
-*        CHANGING cs_parameter = gs_main_param
+*        IMPORTING cs_parameter = gs_main_param
 *    )->pbo(  ).
 
 ENDMODULE.
@@ -43,6 +41,6 @@ ENDMODULE.
 MODULE status_0111 OUTPUT.
 
   " This is called to call the PBO only
-  mo_mng->get_dynpro( )->pbo( ).
+*  mo_mng->get_dynpro( )->controller( )->pbo( ).
 
 ENDMODULE.

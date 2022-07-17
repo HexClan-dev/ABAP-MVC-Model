@@ -101,8 +101,9 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
 
   METHOD get_dynpro.
+
     " Generate a controller form the screen number
-    DATA:  lo_controller TYPE REF TO zif_mvc_controller.
+    DATA: lo_controller TYPE REF TO zif_mvc_controller.
 
     IF iv_class_name IS NOT SUPPLIED.
       IF iv_scr_nr IS SUPPLIED.

@@ -28,20 +28,22 @@ CLASS zcl_mvc_view_middleware DEFINITION
 
 
   PROTECTED SECTION.
+    METHODS: middleware
+      RETURNING VALUE(ro_view) TYPE REF TO zif_mvc_root_view.
 
   PRIVATE SECTION.
 
     DATA: mo_controller TYPE REF TO zif_mvc_controller.
 
-
-    METHODS: middleware
-      RETURNING VALUE(ro_view) TYPE REF TO zif_mvc_root_view.
-
-
     METHODS:
       set_controller
         IMPORTING
           io_controller TYPE REF TO zif_mvc_controller.
+
+    METHODS:
+      check_middleware
+        IMPORTING
+          io_view TYPE REF TO zif_mvc_root_view.
 
 
 ENDCLASS.
@@ -63,9 +65,11 @@ CLASS zcl_mvc_view_middleware IMPLEMENTATION.
 
     DATA(lv_view) = me->middleware( ).
 
-    lv_view->get_parameters(
-      CHANGING
-        cs_input_paramters = cs_parameter
+    check_middleware( io_view = lv_view ).
+
+    lv_view->zif_mvc_parameters~get_parameters(
+      IMPORTING
+        es_input_paramters = es_parameter
     ).
 
   ENDMETHOD.
@@ -75,7 +79,9 @@ CLASS zcl_mvc_view_middleware IMPLEMENTATION.
 
     DATA(lv_view) = me->middleware( ).
 
-    lv_view->add_parameters( ir_params = is_parameter ).
+    check_middleware( io_view = lv_view ).
+
+    lv_view->zif_mvc_parameters~set_parameters( ir_param_value = is_parameter ).
 
   ENDMETHOD.
 
@@ -84,7 +90,9 @@ CLASS zcl_mvc_view_middleware IMPLEMENTATION.
 
     DATA(lv_view) = me->middleware( ).
 
-    lv_view->delete_parameter( iv_parameter = iv_param_name ).
+    check_middleware( io_view = lv_view ).
+
+    lv_view->zif_mvc_parameters~delete_parameter( iv_parameter = iv_param_name ).
 
   ENDMETHOD.
 
@@ -94,13 +102,14 @@ CLASS zcl_mvc_view_middleware IMPLEMENTATION.
 
     DATA(lv_view) = me->middleware( ).
 
-    lv_view->update_parameters( ir_data_param = cs_parameter ).
+    check_middleware( io_view = lv_view ).
+
+    lv_view->zif_mvc_parameters~update_parameters( CHANGING cs_parameters = cs_parameter ).
 
   ENDMETHOD.
 
-
   METHOD middleware.
-    " Define the Middleware Logic for the view
+    " Define the Middle-ware Logic for the view
     DATA: lo_controller TYPE REF TO zcl_mvc_root_controller.
 
     lo_controller ?= me->mo_controller.
@@ -119,6 +128,13 @@ CLASS zcl_mvc_view_middleware IMPLEMENTATION.
     " Call the PBO and then return controller
     me->mo_controller->pbo( ).
     ro_controller = me->mo_controller.
+  ENDMETHOD.
+
+  METHOD check_middleware.
+    IF io_view IS NOT BOUND.
+      MESSAGE 'Please Define View in the Midleware method' TYPE 'E'.
+    ENDIF.
+
   ENDMETHOD.
 
 ENDCLASS.

@@ -5,27 +5,26 @@ CLASS zcl_mvc_root_view DEFINITION
   PUBLIC SECTION.
 
     INTERFACES: zif_mvc_root_view FINAL METHODS
-      add_parameter
-      add_parameters
-      get_parameters
-      update_parameters
-      delete_parameter.
+      zif_mvc_parameters~set_parameter
+      zif_mvc_parameters~set_parameters
+      zif_mvc_parameters~get_parameters
+      zif_mvc_parameters~get_parameter
+      zif_mvc_parameters~delete_parameter
+      zif_mvc_parameters~update_parameters.
 
 
     ALIASES update_parameters
-      FOR zif_mvc_root_view~update_parameters.
-
+      FOR zif_mvc_parameters~update_parameters.
+    ALIASES get_parameter
+      FOR zif_mvc_parameters~get_parameter.
     ALIASES get_parameters
-      FOR zif_mvc_root_view~get_parameters.
-
-    ALIASES add_parameter
-      FOR zif_mvc_root_view~add_parameter.
-
-    ALIASES add_parameters
-      FOR zif_mvc_root_view~add_parameters.
-
+      FOR zif_mvc_parameters~get_parameters.
+    ALIASES set_parameter
+      FOR zif_mvc_parameters~set_parameter.
+    ALIASES set_parameters
+      FOR zif_mvc_parameters~set_parameters.
     ALIASES delete_parameter
-      FOR zif_mvc_root_view~delete_parameter.
+      FOR zif_mvc_parameters~delete_parameter.
 
 
     METHODS: constructor.
@@ -52,38 +51,37 @@ CLASS zcl_mvc_root_view IMPLEMENTATION.
 
   METHOD update_parameters.
     " Generic input structure
-    me->mo_parameters->update_parameters( is_parameters = ir_data_param ).
+    me->mo_parameters->update_parameters( CHANGING cs_parameters = cs_parameters ).
 
   ENDMETHOD.
 
-  METHOD add_parameter.
+  METHOD set_parameter.
     " Add Parameter
-    DATA: ls_parameter_structure TYPE zcl_mvc_parameters=>ty_parameter.
+    DATA: ls_parameter_structure TYPE zif_mvc_parameters=>ty_parameter.
 
-    ls_parameter_structure =  VALUE #( name = iv_param_name value = ir_param_value ).
-    me->mo_parameters->add_parameter( is_parameter = ls_parameter_structure ).
+*    ls_parameter_structure =  VALUE #( name = iv_param_name value = ir_param_value ).
+    me->mo_parameters->set_parameter( iv_param_name = iv_param_name ir_param_value = ir_param_value ).
 
   ENDMETHOD.
 
   METHOD get_parameters.
     " Get the Assigned Parameters
     me->mo_parameters->get_parameters(
-      CHANGING
-        cs_parameters = cs_input_paramters
+      IMPORTING
+        es_input_paramters = es_input_paramters
     ).
 
   ENDMETHOD.
 
-
-  METHOD add_parameters.
+  METHOD set_parameters.
     " Add Multiple Parameters
-    me->mo_parameters->add_parameters( is_parameters = ir_params ).
+    me->mo_parameters->set_parameters( ir_param_value = ir_param_value ).
   ENDMETHOD.
 
 
   METHOD delete_parameter.
     " Add Multiple Parameters
-    me->mo_parameters->remove_parameter( iv_parameter = iv_parameter ).
+    me->mo_parameters->delete_parameter( iv_parameter = iv_parameter ).
   ENDMETHOD.
 
 ENDCLASS.

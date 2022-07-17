@@ -5,42 +5,26 @@ CLASS zcl_mvc_parameters DEFINITION
 
   PUBLIC SECTION.
 
-*--------Types
-    TYPES: BEGIN OF ty_parameter,
-             name  TYPE char50,
-             value TYPE string,
-             type  TYPE REF TO cl_abap_datadescr,
-           END OF ty_parameter.
 
-    TYPES: tt_parameters TYPE HASHED TABLE OF ty_parameter WITH UNIQUE KEY name.
-*---------END Types
+    INTERFACES: zif_mvc_parameters.
 
-    METHODS:
-      add_parameters
-        IMPORTING
-          !is_parameters TYPE any,
+    ALIASES get_parameters
+      FOR zif_mvc_parameters~get_parameters.
 
-      add_parameter
-        IMPORTING
-          !is_parameter TYPE ty_parameter,
+    ALIASES get_parameter
+      FOR zif_mvc_parameters~get_parameter.
 
-      update_parameters
-        IMPORTING
-          !is_parameters TYPE any,
+    ALIASES set_parameter
+      FOR zif_mvc_parameters~set_parameter.
 
-      get_parameters
-        CHANGING
-          cs_parameters TYPE any,
+    ALIASES set_parameters
+      FOR zif_mvc_parameters~set_parameters.
 
-      get_parameter
-        IMPORTING
-                  iv_param_name       TYPE ty_parameter-name
-        RETURNING VALUE(rs_parameter) TYPE ty_parameter,
+    ALIASES delete_parameter
+      FOR zif_mvc_parameters~delete_parameter.
 
-      remove_parameter
-        IMPORTING
-                  !iv_parameter     TYPE char50
-        RETURNING VALUE(rv_deleted) TYPE abap_bool.
+    ALIASES update_parameters
+      FOR zif_mvc_parameters~update_parameters.
 
 
   PROTECTED SECTION.
@@ -50,10 +34,9 @@ CLASS zcl_mvc_parameters DEFINITION
 
       insert_entry
         IMPORTING
-          !is_parameter TYPE ty_parameter.
+          !is_parameter TYPE zif_mvc_parameters=>ty_parameter.
 
-
-    DATA: mt_parameters TYPE tt_parameters.
+    DATA: mt_parameters TYPE zif_mvc_parameters=>tt_parameters.
 
 ENDCLASS.
 
@@ -62,17 +45,17 @@ ENDCLASS.
 CLASS zcl_mvc_parameters IMPLEMENTATION.
 
 
-  METHOD add_parameters.
+  METHOD set_parameters.
 
     DATA: lo_str_descr TYPE REF TO cl_abap_structdescr.
-    DATA: ls_comp  TYPE ty_parameter.
+    DATA: ls_comp  TYPE zif_mvc_parameters=>ty_parameter.
 
     TRY.
-        lo_str_descr ?= cl_abap_structdescr=>describe_by_data( is_parameters ).
+        lo_str_descr ?= cl_abap_structdescr=>describe_by_data( ir_param_value ).
         DATA(lt_old_comp) = lo_str_descr->get_components( ).
 
         LOOP AT lt_old_comp ASSIGNING FIELD-SYMBOL(<ls_s_line>).
-          ASSIGN COMPONENT <ls_s_line>-name OF STRUCTURE is_parameters TO FIELD-SYMBOL(<lv_value>).
+          ASSIGN COMPONENT <ls_s_line>-name OF STRUCTURE ir_param_value TO FIELD-SYMBOL(<lv_value>).
           CLEAR: ls_comp.
           ls_comp-name = <ls_s_line>-name.
           ls_comp-type = <ls_s_line>-type.
@@ -90,14 +73,14 @@ CLASS zcl_mvc_parameters IMPLEMENTATION.
   METHOD update_parameters.
 
     DATA: lo_str_descr TYPE REF TO cl_abap_structdescr.
-    DATA: ls_comp  TYPE ty_parameter.
+    DATA: ls_comp  TYPE zif_mvc_parameters=>ty_parameter.
 
     TRY.
-        lo_str_descr ?= cl_abap_structdescr=>describe_by_data( is_parameters ).
+        lo_str_descr ?= cl_abap_structdescr=>describe_by_data( cs_parameters ).
         DATA(lt_old_comp) = lo_str_descr->get_components( ).
 
         LOOP AT lt_old_comp ASSIGNING FIELD-SYMBOL(<ls_s_line>).
-          ASSIGN COMPONENT <ls_s_line>-name OF STRUCTURE is_parameters TO FIELD-SYMBOL(<lv_value>).
+          ASSIGN COMPONENT <ls_s_line>-name OF STRUCTURE cs_parameters TO FIELD-SYMBOL(<lv_value>).
           CLEAR: ls_comp.
           ls_comp-name = <ls_s_line>-name.
           ls_comp-type = <ls_s_line>-type.
@@ -128,19 +111,17 @@ CLASS zcl_mvc_parameters IMPLEMENTATION.
   METHOD get_parameters.
 
     DATA: lo_str_descr TYPE REF TO cl_abap_structdescr.
-    DATA: ls_comp  TYPE ty_parameter.
 
     TRY.
-        lo_str_descr ?= cl_abap_structdescr=>describe_by_data( cs_parameters ).
+        lo_str_descr ?= cl_abap_structdescr=>describe_by_data( es_input_paramters ).
         DATA(lt_old_comp) = lo_str_descr->get_components( ).
 
         LOOP AT lt_old_comp ASSIGNING FIELD-SYMBOL(<ls_s_line>).
-          CLEAR: ls_comp.
 
           READ TABLE me->mt_parameters INTO DATA(ls_parameter) WITH KEY name = <ls_s_line>-name.
 
           ASSIGN COMPONENT 'type' OF STRUCTURE <ls_s_line> TO FIELD-SYMBOL(<lv_type>).
-          ASSIGN COMPONENT <ls_s_line>-name OF STRUCTURE cs_parameters TO FIELD-SYMBOL(<lv_value>).
+          ASSIGN COMPONENT <ls_s_line>-name OF STRUCTURE es_input_paramters TO FIELD-SYMBOL(<lv_value>).
 
           <lv_type> = ls_parameter-type.
           <lv_value> = ls_parameter-value.
@@ -151,10 +132,9 @@ CLASS zcl_mvc_parameters IMPLEMENTATION.
         " TODO -> Raise a specific message
     ENDTRY.
 
-
   ENDMETHOD.
 
-  METHOD remove_parameter.
+  METHOD delete_parameter.
 
     DELETE me->mt_parameters WHERE name = iv_parameter.
 
@@ -166,10 +146,10 @@ CLASS zcl_mvc_parameters IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD add_parameter.
+  METHOD set_parameter.
 
     " Insert parameter to internal table
-    me->insert_entry( is_parameter = is_parameter ).
+    me->insert_entry( is_parameter = VALUE #( name = iv_param_name type = ir_param_type value = ir_param_value ) ).
 
   ENDMETHOD.
 

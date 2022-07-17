@@ -5,38 +5,40 @@ CLASS zcl_mvc_root_controller DEFINITION
 
   PUBLIC SECTION.
 
-    CONSTANTS gc_screen_type_normal TYPE c VALUE 'NORMAL' ##NO_TEXT.
-    CONSTANTS gc_screen_type_subscr TYPE c VALUE 'SUBSCREEN' ##NO_TEXT.
-    CONSTANTS gc_screen_type_modal TYPE c VALUE 'MODAL' ##NO_TEXT.
-
     INTERFACES zif_mvc_parameters
-      FINAL METHODS
-      add_parameter
+      FINAL METHODS delete_parameter
       get_parameters
-      set_parameters
-      delete_parameter.
+      set_parameter
+      set_parameters.
 
     INTERFACES zif_mvc_controller_list
-      FINAL METHODS
-      initialize_controller
-      initialize_view.
+      FINAL METHODS initialize_controller
+      initialize_view .
+
+    ALIASES set_parameter
+      FOR zif_mvc_parameters~set_parameter .
+    ALIASES set_parameters
+      FOR zif_mvc_parameters~set_parameters .
+    ALIASES update_parameters
+      FOR zif_mvc_parameters~update_parameters .
+    ALIASES delete_parameter
+      FOR zif_mvc_parameters~delete_parameter .
+    ALIASES get_parameter
+      FOR zif_mvc_parameters~get_parameter .
+    ALIASES get_parameters
+      FOR zif_mvc_parameters~get_parameters .
 
     ALIASES initialize_controller
-      FOR zif_mvc_controller_list~initialize_controller.
+      FOR zif_mvc_controller_list~initialize_controller .
     ALIASES initialize_view
-      FOR zif_mvc_controller_list~initialize_view.
+      FOR zif_mvc_controller_list~initialize_view .
 
-
-    ALIASES set_parameters
-      FOR zif_mvc_parameters~set_parameters.
-    ALIASES get_parameters
-      FOR zif_mvc_parameters~get_parameters.
-    ALIASES add_parameter
-       FOR zif_mvc_parameters~add_parameter.
-    ALIASES delete_parameter
-       FOR zif_mvc_parameters~delete_parameter.
-
-
+    CONSTANTS:
+      gc_screen_type_normal TYPE c LENGTH 10 VALUE 'NORMAL' ##NO_TEXT.
+    CONSTANTS:
+      gc_screen_type_subscr TYPE c LENGTH 10 VALUE 'SUBSCREEN' ##NO_TEXT.
+    CONSTANTS:
+      gc_screen_type_modal  TYPE c LENGTH 10 VALUE 'MODAL' ##NO_TEXT.
 
     METHODS set_status_and_title
       IMPORTING
@@ -44,11 +46,10 @@ CLASS zcl_mvc_root_controller DEFINITION
         !iv_gui_status  TYPE gui_status OPTIONAL
         !iv_titlebar    TYPE gui_title OPTIONAL
         !iv_screen_type TYPE c DEFAULT gc_screen_type_normal .
-
-    METHODS:
-      get_view FINAL
-        RETURNING VALUE(ro_view) TYPE REF TO zif_mvc_root_view.
-
+    METHODS get_view
+          FINAL
+      RETURNING
+        VALUE(ro_view) TYPE REF TO zif_mvc_root_view .
   PROTECTED SECTION.
 
     DATA mo_view TYPE REF TO zif_mvc_root_view .
@@ -85,6 +86,11 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD get_view.
+    ro_view = me->mo_view.
+  ENDMETHOD.
+
+
   METHOD initialize.
     " This will be implemented in Subclass
   ENDMETHOD.
@@ -97,7 +103,6 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
 
     me->mv_scr_type = iv_screen_type.
   ENDMETHOD.
-
 
   METHOD initialize_controller.
     " Initialize Root Controller
@@ -127,12 +132,31 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD add_parameter.
+  METHOD delete_parameter.
+    CHECK me->mo_view IS BOUND.
+
+    me->mo_view->zif_mvc_parameters~delete_parameter( iv_parameter ).
+  ENDMETHOD.
+
+
+  METHOD get_parameters.
+    IF me->mo_view IS BOUND.
+      me->mo_view->zif_mvc_parameters~get_parameters(
+        IMPORTING
+          es_input_paramters = es_input_paramters
+      ).
+    ELSE.
+      MESSAGE 'View is not defined !' TYPE 'W'.
+    ENDIF.
+  ENDMETHOD.
+
+
+  METHOD set_parameter.
 
     IF me->mo_view IS BOUND.
-      me->mo_view->add_parameter(
+      me->mo_view->zif_mvc_parameters~set_parameter(
         EXPORTING
-          ir_param_value = ir_data_param
+          ir_param_value = ir_param_value
           iv_param_name  = iv_param_name
       ).
     ENDIF.
@@ -140,35 +164,12 @@ CLASS zcl_mvc_root_controller IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD get_parameters.
-    IF me->mo_view IS BOUND.
-      me->mo_view->get_parameters(
-        CHANGING
-          cs_input_paramters = cs_input_paramters
-      ).
-    ELSE.
-      MESSAGE 'View is not defined !' TYPE 'W'.
-    ENDIF.
-  ENDMETHOD.
-
-
   METHOD set_parameters.
     IF me->mo_view IS BOUND.
-      me->mo_view->update_parameters( ir_data_param ).
+      me->mo_view->zif_mvc_parameters~set_parameters( ir_param_value ).
     ELSE.
       MESSAGE 'View is not defined !' TYPE 'W'.
     ENDIF.
-  ENDMETHOD.
-
-  METHOD delete_parameter.
-    CHECK me->mo_view IS BOUND.
-
-    me->mo_view->delete_parameter( iv_parameter = iv_parameter ).
-
-  ENDMETHOD.
-
-  METHOD get_view.
-    ro_view = me->mo_view.
   ENDMETHOD.
 
 ENDCLASS.

@@ -37,22 +37,24 @@ CLASS lcl_unit_testing IMPLEMENTATION.
                  val2 TYPE string,
                END OF ty_prm1.
 
+        DATA: ls_params_exp TYPE ty_prm1.
+
         DATA(ls_params) = VALUE ty_prm1( val = 'val1ee' val2 = 'valee' ).
-        lo_mvc_params->add_parameters( is_parameters = ls_params ).
+        lo_mvc_params->set_parameters( ir_param_value = ls_params ).
 
         ls_params = VALUE ty_prm1( val = 'Nail' ).
-        lo_mvc_params->update_parameters( is_parameters = ls_params ).
+        lo_mvc_params->update_parameters(  CHANGING cs_parameters = ls_params ).
 
         cl_abap_unit_assert=>assert_false(
                     act              = abap_false                             " Actual data object
                 ).
 
-        CLEAR: ls_params.
 
-        lo_mvc_params->get_parameters( CHANGING cs_parameters = ls_params ).
+        lo_mvc_params->get_parameters( IMPORTING es_input_paramters = ls_params_exp ).
 
         cl_abap_unit_assert=>assert_not_initial( act = ls_params ).
-
+        cl_abap_unit_assert=>assert_equals( act = ls_params_exp-val exp = ls_params-val ).
+        cl_abap_unit_assert=>assert_equals( act = ls_params_exp-val2 exp = ls_params-val2 ).
 
       CATCH cx_root.
         cl_abap_unit_assert=>assert_false(

@@ -1,0 +1,24 @@
+CLASS zcl_mvc_custommiddleware DEFINITION INHERITING FROM zcl_mvc_view_middleware
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  PROTECTED SECTION.
+
+    METHODS: middleware REDEFINITION.
+
+  PRIVATE SECTION.
+
+ENDCLASS.
+
+
+
+CLASS zcl_mvc_custommiddleware IMPLEMENTATION.
+
+  METHOD middleware.
+
+
+  ENDMETHOD.
+
+ENDCLASS.

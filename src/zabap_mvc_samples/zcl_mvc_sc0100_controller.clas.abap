@@ -19,7 +19,8 @@ ENDCLASS.
 
 
 
-CLASS ZCL_MVC_SC0100_CONTROLLER IMPLEMENTATION.
+CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
+
 
 
   METHOD initialize.
@@ -31,20 +32,17 @@ CLASS ZCL_MVC_SC0100_CONTROLLER IMPLEMENTATION.
     me->set_status_and_title( iv_scr_nr = '0110' iv_gui_status = '' iv_titlebar = '' ).
 
     "initialize the GLobal parameter
-    me->add_parameter( iv_param_name = 'SCREEN_NR' ir_data_param = '0110').
+    me->set_parameter( iv_param_name = 'SCREEN_NR' ir_param_value = '0110').
 
   ENDMETHOD.
 
 
   METHOD zif_mvc_controller~pai.
-    " PAI
+  " PAI
 
     CASE iv_ok_code.
       WHEN 'IB'.
         "blabla
-
-      WHEN 'BACK' OR 'EXIT'.
-        LEAVE TO SCREEN 0.
 
     ENDCASE.
   ENDMETHOD.

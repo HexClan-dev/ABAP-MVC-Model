@@ -3,7 +3,7 @@ INTERFACE zif_mvc_middleware
 
   METHODS:
     get_params
-      CHANGING  cs_parameter         TYPE any OPTIONAL
+      EXPORTING es_parameter         TYPE any
       RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
   METHODS:
@@ -13,7 +13,7 @@ INTERFACE zif_mvc_middleware
 
   METHODS:
     update_params
-      CHANGING  cs_parameter         TYPE any OPTIONAL
+      CHANGING cs_parameter         TYPE any
       RETURNING VALUE(ro_controller) TYPE REF TO zif_mvc_controller.
 
 
