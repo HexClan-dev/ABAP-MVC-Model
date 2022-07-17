@@ -38,11 +38,11 @@ CLASS zcl_mvc_sc0100_controller IMPLEMENTATION.
 
 
   METHOD zif_mvc_controller~pai.
-  " PAI
+    " PAI -> Logic implementation
 
     CASE iv_ok_code.
       WHEN 'IB'.
-        "blabla
+        " IB OK Code
 
     ENDCASE.
   ENDMETHOD.

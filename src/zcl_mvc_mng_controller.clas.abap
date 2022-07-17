@@ -20,7 +20,7 @@ CLASS zcl_mvc_mng_controller DEFINITION
                   iv_scr_nr        TYPE sydynnr OPTIONAL
                   iv_class_name    TYPE string OPTIONAL
                     PREFERRED PARAMETER iv_scr_nr
-        RETURNING VALUE(ro_params) TYPE REF TO zcl_mvc_view_middleware,
+        RETURNING VALUE(ro_middleware) TYPE REF TO zcl_mvc_view_middleware,
 
       set_view_mode
         IMPORTING
@@ -128,7 +128,7 @@ CLASS zcl_mvc_mng_controller IMPLEMENTATION.
 
     " View Middleware Controller
     me->mo_middleware->set_controller( io_controller = lo_controller ).
-    ro_params ?= me->mo_middleware.
+    ro_middleware ?= me->mo_middleware.
 
   ENDMETHOD.
 
